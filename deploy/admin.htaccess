@@ -1,0 +1,22 @@
+# ============================================================================
+#  MARLSBORO Group — public_html/admin/.htaccess
+#
+#  Optional. The parent .htaccess already routes /admin/... to this folder's
+#  index.html; this file only makes sure the portal is never indexed and never
+#  framed, and that its HTML is not cached across deployments.
+#
+#  Authentication is NOT enforced here — it is enforced by PHP on every
+#  /api/admin/* request. Do not rely on any web-server rule as the security
+#  boundary.
+# ============================================================================
+
+Options -Indexes
+
+<IfModule mod_headers.c>
+    Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "same-origin"
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-store, must-revalidate"
+    </FilesMatch>
+</IfModule>

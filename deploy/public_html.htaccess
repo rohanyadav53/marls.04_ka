@@ -1,0 +1,86 @@
+# ============================================================================
+#  MARLSBORO Group — public_html/.htaccess
+#
+#  Upload this file to /home/<cwp-user>/public_html/.htaccess (renaming it to
+#  exactly ".htaccess"). It does four things:
+#
+#    1. Forces HTTPS.
+#    2. Keeps /api out of the SPA rewrite so PHP endpoints are reached directly.
+#    3. Serves the admin build for any /admin/... URL.
+#    4. Serves the marketing site for everything else (React Router needs this,
+#       otherwise a refresh on /contact returns 404).
+#
+#  If the site already has an .htaccess, merge these rules rather than
+#  overwriting — CWP may have added its own directives.
+# ============================================================================
+
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # --- 1. HTTPS ---------------------------------------------------------
+    # Comment this block out until the SSL certificate is issued, or the site
+    # will redirect into a certificate error.
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # --- 2. The API answers for itself ------------------------------------
+    RewriteRule ^api/ - [L]
+
+    # --- 3. Admin single-page app -----------------------------------------
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^admin(/.*)?$ /admin/index.html [L]
+
+    # --- 4. Public single-page app ----------------------------------------
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
+</IfModule>
+
+# --- Never serve configuration, dumps or logs, wherever they end up --------
+<FilesMatch "(^\.|\.(sql|log|md|ini|sh|bak|swp|dist|env)$|~$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# --- Caching ---------------------------------------------------------------
+# Vite fingerprints every asset filename, so they are safe to cache forever.
+# The two HTML entry points must never be cached or visitors keep an old build.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css                  "access plus 1 year"
+    ExpiresByType application/javascript    "access plus 1 year"
+    ExpiresByType image/jpeg                "access plus 6 months"
+    ExpiresByType image/png                 "access plus 6 months"
+    ExpiresByType image/svg+xml             "access plus 6 months"
+    ExpiresByType application/pdf           "access plus 1 month"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always unset X-Powered-By
+
+    # The admin portal is never indexed and never framed.
+    <FilesMatch "^index\.html$">
+        Header set X-Frame-Options "SAMEORIGIN"
+    </FilesMatch>
+</IfModule>
+
+# --- Compression -----------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>

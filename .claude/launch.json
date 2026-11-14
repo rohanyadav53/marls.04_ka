@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "marlsboro-site",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "5199", "--strictPort"],
+      "port": 5199
+    },
+    {
+      "name": "coming-soon",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5507", "--directory", "D:/comming_soon_marlsboro"],
+      "port": 5507
+    }
+  ]
+}

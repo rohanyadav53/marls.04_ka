@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+/* ============================================================
+   MARLSBORO design tokens  (Tailwind v4 reads these as utilities)
+   ============================================================ */
+@theme {
+  /* Type — Latin faces first, then Devanagari (hi) + CJK (zh) fallbacks
+     so every script renders in a real font, never an ugly default. */
+  --font-sans: "IBM Plex Sans", "Noto Sans Devanagari", "Noto Sans SC",
+    ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", "Noto Sans Devanagari", "Noto Sans SC", ui-sans-serif,
+    system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "Noto Sans SC", ui-monospace, monospace;
+
+  /* Palette (spec §3) */
+  --color-ink: #0b2545;
+  --color-blue-900: #0e2a4e;
+  --color-blue-700: #134a8e;
+  --color-blue: #1e5ba8;
+  --color-blue-400: #4f8fd6;
+  --color-blue-50: #eaf2fb;
+  --color-red: #d11f2d;
+  --color-red-700: #a6121e;
+  --color-red-50: #fceaec;
+  --color-surface: #f6f8fb;
+  --color-line: #e2e8f0;
+  --color-text: #334155;
+  --color-muted: #7a8aa0;
+
+  /* Logo mark keeps its own brand reds/blues */
+  --color-mark-red: #be1e2d;
+  --color-mark-blue: #04568e;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+  ::selection {
+    background: var(--color-blue);
+    color: #fff;
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 2rem; }
+  }
+
+  /* Eyebrow — the signature mono label */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.78rem;
+  }
+
+  /* Brand gradients (spec §3) */
+  .bg-grad-hero { background-image: linear-gradient(155deg, #0e2a4e 0%, #16407c 55%, #1e5ba8 100%); }
+  .bg-grad-cta  { background-image: linear-gradient(135deg, #e11f2d 0%, #b3121e 100%); }
+  .bg-grad-dark { background-image: linear-gradient(160deg, #0b2545 0%, #123a72 100%); }
+
+  /* Signature: woven-weave thread texture for dark panels. Quiet by design. */
+  .weave {
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 9px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 9px);
+    background-size: 13px 13px;
+  }
+  .weave-ink {
+    background-image:
+      repeating-linear-gradient(45deg, rgba(11,37,69,0.05) 0 1px, transparent 1px 9px),
+      repeating-linear-gradient(-45deg, rgba(11,37,69,0.05) 0 1px, transparent 1px 9px);
+    background-size: 13px 13px;
+  }
+  /* Hero-only slow ambient drift */
+  .weave-drift { animation: weave-drift 32s linear infinite; }
+  @keyframes weave-drift {
+    from { background-position: 0 0, 0 0; }
+    to   { background-position: 260px 260px, -260px 260px; }
+  }
+
+  /* Hero slider: slow Ken Burns drift on the active photo. */
+  .hero-zoom {
+    animation: hero-zoom 8s ease-out forwards;
+  }
+  @keyframes hero-zoom {
+    from { transform: scale(1.08); }
+    to   { transform: scale(1); }
+  }
+
+  /* Hero slider: the 5s sweep under the active progress bar. CSS (not JS) so
+     `animation-play-state: paused` can freeze it in place on hover. */
+  .hero-progress {
+    animation: hero-progress 5s linear forwards;
+  }
+  @keyframes hero-progress {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  /* Mega-menu multi-column layout (Knack Packaging style) */
+  .mega-columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .mega-columns--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .mega-col {
+    padding: 0 1.5rem;
+  }
+  .mega-col:first-child {
+    padding-left: 0;
+  }
+  .mega-col:last-child,
+  .mega-col:nth-last-child(2):has(+ .col-span-full) {
+    padding-right: 0;
+  }
+  .mega-col-divider {
+    border-right: 1px solid var(--color-line);
+  }
+  @media (max-width: 1279px) {
+    .mega-columns,
+    .mega-columns--3 {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .mega-col {
+      padding: 0;
+      border-right: none !important;
+    }
+    .mega-col-divider {
+      border-right: none;
+      border-bottom: 1px solid var(--color-line);
+      padding-bottom: 1.5rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .weave-drift { animation: none; }
+  .hero-progress { animation: none; transform: scaleX(1); }
+  .hero-zoom { animation: none; }
+}
+
+
+/* ---- Google Website Translator: hide its own chrome ------------------------
+ * The widget injects a top banner (and shifts <body> down by 40px), hover
+ * tooltips and a yellow highlight on translated text. Our LanguageMenu is the
+ * only UI; none of these should be visible. */
+body { top: 0 !important; }
+iframe.goog-te-banner-frame,
+.skiptranslate > iframe,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover { display: none !important; }
+.goog-text-highlight { background: none !important; box-shadow: none !important; }

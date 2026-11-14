@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+dist/
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# environment variables
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# raw client photo drops (source PNGs, not deployed — web-ready cuts live in public/)
+marls updated photo sept./
+CLAUDE.md
+AGENTS.md
+.claude/

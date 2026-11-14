@@ -1,0 +1,38 @@
+# MARLSBORO Group — /api
+#
+# Apache serves only the endpoint scripts in this directory and in admin/.
+# Everything else (library code, templates, cron, logs) lives in _internal/,
+# which has its own deny-all rule.
+
+Options -Indexes -MultiViews
+
+# Dotfiles, backups, SQL dumps, logs and docs are never web content.
+<FilesMatch "(^\.|\.(sql|log|md|ini|sh|bak|swp|dist|example)$|~$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# API responses are never cached anywhere.
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Cache-Control "no-store, no-cache, must-revalidate"
+    Header always unset X-Powered-By
+</IfModule>
+
+# No PHP notices in a JSON body, whatever the server default is.
+<IfModule mod_php.c>
+    php_flag display_errors off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag display_errors off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag display_errors off
+</IfModule>

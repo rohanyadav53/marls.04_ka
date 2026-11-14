@@ -1,0 +1,19 @@
+# MARLSBORO Group — /api/_internal
+#
+# Library code, email templates, the cron script, setup tools and logs.
+# None of it is ever fetched over HTTP: the cron runs through the PHP CLI and
+# everything else is included by the endpoints one directory up.
+#
+# If this file is ever lost, the fallback config path (_internal/config.php)
+# becomes readable — which is exactly why the real configuration belongs
+# outside public_html.
+
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>
+
+Options -Indexes

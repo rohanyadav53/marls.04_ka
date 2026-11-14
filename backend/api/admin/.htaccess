@@ -1,0 +1,12 @@
+# MARLSBORO Group — /api/admin
+#
+# Authentication is enforced in PHP (Auth::requireUser on every endpoint), not
+# here. This file only removes directory listing and repeats the no-cache
+# headers in case the parent .htaccess is not inherited.
+
+Options -Indexes -MultiViews
+
+<IfModule mod_headers.c>
+    Header always set Cache-Control "no-store, no-cache, must-revalidate"
+    Header always set X-Content-Type-Options "nosniff"
+</IfModule>

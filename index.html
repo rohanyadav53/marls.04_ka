@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0B2545" />
+    <meta
+      name="description"
+      content="MARLSBORO Group — manufacturer of BOPP woven bags, PP woven sacks, and flexible packaging. Quality-driven, innovation-led, since 2016."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>MARLSBORO Group — Woven Bags & Flexible Packaging Manufacturer</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Google Website Translator mounts here (hidden). Kept outside #root so
+         React never manages it. Our own language menu drives it. -->
+    <div id="google_translate_element" aria-hidden="true"
+         style="position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden"></div>
+    <script>
+      window.onerror = function(msg, src, line, col, err) {
+        document.getElementById('root').innerHTML =
+          '<div style="padding:32px;font-family:monospace;color:#c00">' +
+          '<h1>JS Error</h1><pre>' + msg + '</pre>' +
+          '<pre>Source: ' + src + ':' + line + ':' + col + '</pre>' +
+          '<pre>' + (err && err.stack ? err.stack : '') + '</pre></div>';
+      };
+      window.addEventListener('unhandledrejection', function(e) {
+        document.getElementById('root').innerHTML =
+          '<div style="padding:32px;font-family:monospace;color:#c00">' +
+          '<h1>Unhandled Promise Rejection</h1>' +
+          '<pre>' + (e.reason && e.reason.stack ? e.reason.stack : e.reason) + '</pre></div>';
+      });
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

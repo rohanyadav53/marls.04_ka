@@ -1,0 +1,76 @@
+type LogoVariant = "header" | "footer" | "compact";
+
+type LogoProps = {
+  variant?: LogoVariant;
+  className?: string;
+};
+
+/**
+ * Official MARLSBORO emblem — artwork is final and never recoloured.
+ * Paths are inlined verbatim from `src/assets/logo-mark.svg`
+ * (mark red #BE1E2D, mark blue #04568E).
+ */
+export function LogoMark({ className }: { className?: string }) {
+  return (
+    // viewBox cropped to the artwork's true bounding box (the source file has
+    // ~50% empty margin) so the mark fills its box in the header, footer & favicon.
+    <svg
+      viewBox="618 624 1145 1165"
+      className={className}
+      role="img"
+      aria-label="MARLSBORO emblem"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g transform="matrix(4.166667,0,0,4.166667,0,0)">
+        <g transform="matrix(1.788345,0,0,1.820203,405.648199,239.889536)">
+          <path d="M0,-2.367L-6.547,-2.367L-6.547,0L0,-2.367Z" fill="rgb(35,31,32)" />
+        </g>
+        <g transform="matrix(1.788345,0,0,1.820203,173.185166,195.148024)">
+          <path d="M0,51.858C0,17.156 28.235,-11.076 62.935,-11.076C88.847,-11.076 111.353,4.172 121.054,26.442L120.517,26.475C120.517,26.475 109.699,45.358 102.24,57.708L113.83,57.708L133.016,25.717C122.391,-2.671 94.988,-22.939 62.935,-22.939C21.694,-22.939 -11.862,10.616 -11.862,51.858C-11.862,59.857 -10.592,67.565 -8.258,74.797L0.699,61.231C0.241,58.172 0,55.043 0,51.858" fill="rgb(190,30,45)" />
+        </g>
+        <g transform="matrix(1.788345,0,0,1.820203,273.747203,228.735693)">
+          <path d="M0,39.255C-0.873,37.749 -1.76,36.218 -2.646,34.685L6.578,20.309L17.423,39.255L29.668,39.255C23.738,29.017 17.203,17.685 13.975,11.95C7.246,0 -0.399,11.95 -0.399,11.95L-8.598,24.367C-11.485,19.351 -14.029,14.906 -15.693,11.95C-22.418,0 -30.068,11.95 -30.068,11.95L-48.175,39.255L-35.234,39.255L-23.089,20.309L-15.117,34.237L-18.431,39.255L0,39.255Z" fill="rgb(190,30,45)" />
+        </g>
+        <g transform="matrix(1.788345,0,0,1.820203,414.317559,425.686623)">
+          <path d="M0,-95.438L-9.199,-80.184C-9.048,-78.409 -8.964,-76.612 -8.964,-74.797C-8.964,-40.094 -37.199,-11.864 -71.9,-11.864C-96.475,-11.864 -117.792,-26.03 -128.147,-46.62L-115.979,-65.604L-128.997,-65.604L-141.335,-46.999C-130.28,-19.481 -103.322,0 -71.9,0C-30.658,0 2.898,-33.555 2.898,-74.797C2.898,-81.954 1.886,-88.878 0,-95.438" fill="rgb(4,86,142)" />
+        </g>
+        <g transform="matrix(1.788345,0,0,1.820203,360.237469,316.315329)">
+          <path d="M0,6.54L7.23,-5.517L-4.391,-5.517C-5.967,-2.952 -7.282,-0.886 -8.147,0.346C-10.939,2.673 -13.33,0.401 -13.33,0.399C-14.406,-1.451 -15.561,-3.444 -16.762,-5.517L-29.031,-5.517L-21.059,8.407C-20.448,9.407 -18.564,12.057 -15.752,12.057L-6.559,12.057C-6.559,12.057 -6.566,12.046 -6.568,12.04C-3.122,11.726 0,6.54 0,6.54" fill="rgb(4,86,142)" />
+        </g>
+        <g transform="matrix(1.788345,0,0,1.820203,216.088814,306.274359)">
+          <path d="M0,17.573L13.246,17.573L23.141,2.148L31.967,17.573L44.376,17.573C44.376,17.573 39.769,9.654 34.176,0L11.604,0L0,17.573Z" fill="rgb(4,86,142)" />
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+const SIZES: Record<LogoVariant, { mark: string; marl: string; grp: string; gap: string }> = {
+  header: { mark: "h-12 w-12 sm:h-[3.75rem] sm:w-[3.75rem]", marl: "text-xl sm:text-[1.6rem]", grp: "text-base sm:text-lg", gap: "gap-3" },
+  footer: { mark: "h-16 w-16 sm:h-[5rem] sm:w-[5rem]", marl: "text-2xl sm:text-[1.85rem]", grp: "text-lg sm:text-xl", gap: "gap-3.5" },
+  compact: { mark: "h-11 w-11", marl: "text-xl", grp: "text-base", gap: "gap-2.5" },
+};
+
+export default function Logo({ variant = "header", className = "" }: LogoProps) {
+  const light = variant === "footer";
+  const s = SIZES[variant];
+  if (variant === "compact") {
+    return <LogoMark className={`${s.mark} ${className}`} />;
+  }
+  return (
+    <span translate="no" className={`inline-flex items-center ${s.gap} ${className}`}>
+      <LogoMark className={`${s.mark} shrink-0`} />
+      <span className="font-display leading-[0.98] tracking-tight">
+        <span
+          className={`block font-extrabold ${s.marl}`}
+          style={{ color: light ? "#ffffff" : "var(--color-blue)" }}
+        >
+          Marlsboro
+        </span>
+        <span className={`block font-semibold ${s.grp}`} style={{ color: "var(--color-red)" }}>
+          Group
+        </span>
+      </span>
+    </span>
+  );
+}
